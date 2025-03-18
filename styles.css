@@ -1,0 +1,130 @@
+/* Table Wrapper for Scrolling */
+.table-wrapper {
+    overflow-x: auto; /* Enables horizontal scrolling */
+    overflow-y: auto; /* Enables vertical scrolling */
+    max-height: 500px; /* Prevents excessive height */
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    width: 100%;
+    max-width: 100%;
+
+}
+
+/* Table Styling */
+table {
+    width: 100%;
+    min-width: 1600px; /* Ensures proper spacing */
+    border-collapse: collapse;
+    table-layout: fixed; /* Ensures consistent column width */
+}
+
+/* Image column */
+.table-image {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+/* Freeze the first two columns (ID and Common Name) */
+.table th:first-child, .table td:first-child,
+.table th:nth-child(2), .table td:nth-child(2) {
+    position: sticky;
+    background: white;
+    z-index: 2;
+}
+
+/* Set left positioning for frozen columns */
+.table th:first-child, .table td:first-child {
+    left: 0;
+    min-width: 80px; /* Adjust width for ID */
+    text-align: center;
+    font-weight: bold;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.table th:nth-child(2), .table td:nth-child(2) {
+    left: 80px; /* Offset by ID column width */
+    min-width: 150px; /* Adjust width for Common Name */
+    text-align: left;
+    font-weight: bold;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Sticky Headers */
+table thead {
+    position: sticky;
+    top: 0;
+    background-color: #4CAF50;
+    color: white;
+}
+
+/* Adjust Column Widths */
+th, td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: center;
+    white-space: nowrap; /* Prevents wrapping */
+}
+
+/* Adjust specific column sizes */
+th:nth-child(1), td:nth-child(1) { width: 100px; }   /* ID */
+th:nth-child(2), td:nth-child(2) { width: 150px; }  /* Common Name */
+th:nth-child(3), td:nth-child(3) { width: 100px; }  /* Available */
+th:nth-child(4), td:nth-child(4) { width: 120px; }  /* Sales Price */
+th:nth-child(5), td:nth-child(5) { width: 200px; }  /* Title */
+th:nth-child(6), td:nth-child(6) { width: 250px; }  /* URL */
+th:nth-child(7), td:nth-child(7) { width: 130px; }  /* Size */
+th:nth-child(8), td:nth-child(8) { width: 130px; }  /* Transit */
+th:nth-child(9), td:nth-child(9) { width: 130px; }  /* Watering */
+th:nth-child(10), td:nth-child(10) { width: 130px; } /* Sunlight */
+th:nth-child(11), td:nth-child(11) { width: 130px; } /* Original Price */
+th:nth-child(12), td:nth-child(12) { width: 180px; } /* Category */
+th:nth-child(13), td:nth-child(13) { width: 100px; } /* Mother */
+th:nth-child(14), td:nth-child(14) { width: 100px; } /* Hanging */
+th:nth-child(15), td:nth-child(15) { width: 100px; } /* Combo */
+th:nth-child(16), td:nth-child(16) { width: 100px; } /* Indoor */
+th:nth-child(17), td:nth-child(17) { width: 100px; } /* Restocked */
+th:nth-child(18), td:nth-child(18) { width: 150px; } /* Place Available */
+th:nth-child(19), td:nth-child(19) { width: 150px; } /* Quantity Available */
+th:nth-child(20), td:nth-child(20) { width: 180px; } /* Demand */
+th:nth-child(21), td:nth-child(21) { width: 180px; } /* Demand */
+
+
+/* Input Fields */
+table input, table select {
+    width: 100%;
+    padding: 8px;
+    font-size: 14px;
+    border: 1px solid #ddd;
+    text-align: center;
+}
+
+/* Buttons */
+.btn-custom {
+    width: 100%;
+    padding: 12px;
+    font-size: 16px;
+    margin-top: 10px;
+    border-radius: 5px;
+}
+
+/* Mobile Responsive */
+@media screen and (max-width: 768px) {
+    .container {
+        width: 100%;
+        padding: 15px;
+    }
+    table {
+        font-size: 12px;
+        min-width: 1200px;
+    }
+    th, td {
+        padding: 8px;
+    }
+    .btn-custom {
+        font-size: 14px;
+        padding: 10px;
+    }
+}
