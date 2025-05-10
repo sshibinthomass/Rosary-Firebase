@@ -12,6 +12,22 @@ import {
   startAt,
   deleteDoc,
 } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-firestore.js";
+import {
+  getAuth,
+  signInWithPopup,
+  GoogleAuthProvider,
+  onAuthStateChanged,
+  signOut
+} from "https://www.gstatic.com/firebasejs/10.5.0/firebase-auth.js";
+
+// Allowed emails
+const ALLOWED_EMAILS = [
+  "sshibinthomass@gmail.com"
+];
+
+// PIN authentication for the whole app
+const APP_PIN = '112233'; // Change this to your desired PIN
+const PIN_KEY = 'app_pin_authenticated';
 
 // Firebase Configuration (Replace with your actual Firebase config)
 const firebaseConfig = {
@@ -26,6 +42,99 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
+const auth = getAuth(app);
+
+// Add sign-in/sign-out UI
+const container = document.querySelector('.container');
+const authDiv = document.createElement('div');
+authDiv.className = 'text-end mt-2';
+container.prepend(authDiv);
+
+function renderAuthUI(user) {
+  authDiv.innerHTML = '';
+  if (user) {
+    authDiv.innerHTML = `
+      <span class="me-2">Signed in as <b>${user.email}</b></span>
+      <button id="signout-btn" class="btn btn-sm btn-outline-danger">Sign Out</button>
+    `;
+    document.getElementById('signout-btn').onclick = () => signOut(auth);
+  } else {
+    authDiv.innerHTML = `
+      <button id="signin-btn" class="btn btn-sm btn-outline-primary">Sign in with Google</button>
+    `;
+    document.getElementById('signin-btn').onclick = () => {
+      const provider = new GoogleAuthProvider();
+      signInWithPopup(auth, provider);
+    };
+  }
+}
+
+// PIN authentication functions
+function showPinModal() {
+  let modal = document.getElementById('pin-modal');
+  if (!modal) {
+    modal = document.createElement('div');
+    modal.id = 'pin-modal';
+    modal.style.position = 'fixed';
+    modal.style.top = '0';
+    modal.style.left = '0';
+    modal.style.width = '100vw';
+    modal.style.height = '100vh';
+    modal.style.background = 'rgba(0,0,0,0.4)';
+    modal.style.display = 'flex';
+    modal.style.alignItems = 'center';
+    modal.style.justifyContent = 'center';
+    modal.style.zIndex = '9999';
+    modal.innerHTML = `
+      <div style="background:#fff;padding:32px 24px;border-radius:10px;box-shadow:0 2px 16px #0002;min-width:260px;text-align:center;">
+        <h5>Enter 6-digit PIN</h5>
+        <input id="pin-input" type="password" maxlength="6" style="font-size:2rem;text-align:center;letter-spacing:8px;width:160px;margin:16px 0;" autofocus />
+        <div id="pin-error" style="color:red;min-height:24px;"></div>
+        <button id="pin-submit" class="btn btn-primary w-100">Submit</button>
+      </div>
+    `;
+    document.body.appendChild(modal);
+    document.getElementById('pin-submit').onclick = () => {
+      const val = document.getElementById('pin-input').value;
+      if (val === APP_PIN) {
+        localStorage.setItem(PIN_KEY, '1');
+        modal.remove();
+        showApp();
+      } else {
+        document.getElementById('pin-error').innerText = 'Incorrect PIN';
+      }
+    };
+    document.getElementById('pin-input').onkeydown = (e) => {
+      if (e.key === 'Enter') document.getElementById('pin-submit').click();
+    };
+  }
+}
+
+function showApp() {
+  document.querySelector('.table-wrapper').style.display = '';
+  if (!document.getElementById('logout-btn')) {
+    const logoutBtn = document.createElement('button');
+    logoutBtn.id = 'logout-btn';
+    logoutBtn.className = 'btn btn-sm btn-outline-danger float-end mt-2';
+    logoutBtn.innerText = 'Logout';
+    logoutBtn.onclick = () => {
+      localStorage.removeItem(PIN_KEY);
+      location.reload();
+    };
+    document.querySelector('.container').prepend(logoutBtn);
+  }
+}
+
+// Block table until authenticated
+const tableWrapper = document.querySelector('.table-wrapper');
+tableWrapper.style.display = 'none';
+
+if (localStorage.getItem(PIN_KEY) === '1') {
+  showApp();
+  fetchData();
+} else {
+  showPinModal();
+}
 
 let lastVisible = null;
 let firstVisible = null;
