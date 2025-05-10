@@ -116,8 +116,7 @@ function renderTable(dataList) {
       <td><input type="text" class="form-control" value="${data.commonName || ""}" data-field="commonName" disabled></td>
       <td><input type="checkbox" ${data.available ? "checked" : ""} data-field="available"></td>
       <td><input type="number" class="form-control" value="${data.salesPrice || ""}" data-field="salesPrice"></td>
-      <td><input type="checkbox" ${data.isRestocked ? "checked" : ""} data-field="isRestocked"></td>
-      <td>${generateDropdown("qtyAva", data.qtyAva)}</td>
+      <td><input type="number" class="form-control" value="${data.originalPrice || ""}" data-field="originalPrice" disabled></td>
     `;
     tableBody.appendChild(row);
   });
@@ -159,8 +158,7 @@ async function saveChanges() {
     const updatedData = {
       salesPrice: Number(row.querySelector('input[data-field="salesPrice"]').value),
       available: row.querySelector('input[data-field="available"]').checked,
-      isRestocked: row.querySelector('input[data-field="isRestocked"]').checked,
-      qtyAva: row.querySelector('select[data-field="qtyAva"]').value,
+      originalPrice: Number(row.querySelector('input[data-field="originalPrice"]').value),
     };
     await updateDoc(doc(db, "plants", docId), updatedData);
     row.classList.remove("table-warning");
