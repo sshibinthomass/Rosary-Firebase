@@ -108,31 +108,17 @@ async function fetchData(direction = "next") {
 function renderTable(dataList) {
   const tableBody = document.querySelector("table tbody");
   tableBody.innerHTML = "";
-  const isMobile = window.innerWidth <= 600;
-
   dataList.forEach((data) => {
     const row = document.createElement("tr");
-    if (isMobile) {
-      row.innerHTML = `
-        <td><span class="mobile-label">Id</span><input type="number" class="form-control" value="${data.id}" data-id="${data.docId}" data-field="id" disabled></td>
-        <td><span class="mobile-label">Image</span><img src="${data.url}" alt="Plant Image" class="img-thumbnail table-image"></td>
-        <td><span class="mobile-label">Common Name</span><input type="text" class="form-control" value="${data.commonName || ""}" data-field="commonName" disabled></td>
-        <td><span class="mobile-label">Available</span><input type="checkbox" ${data.available ? "checked" : ""} data-field="available"></td>
-        <td><span class="mobile-label">Sales Price</span><input type="number" class="form-control" value="${data.salesPrice || ""}" data-field="salesPrice"></td>
-        <td><span class="mobile-label">Restocked</span><input type="checkbox" ${data.isRestocked ? "checked" : ""} data-field="isRestocked"></td>
-        <td><span class="mobile-label">Quantity Available</span>${generateDropdown("qtyAva", data.qtyAva)}</td>
-      `;
-    } else {
-      row.innerHTML = `
-        <td><input type="number" class="form-control" value="${data.id}" data-id="${data.docId}" data-field="id" disabled></td>
-        <td><img src="${data.url}" alt="Plant Image" class="img-thumbnail table-image"></td>
-        <td><input type="text" class="form-control" value="${data.commonName || ""}" data-field="commonName" disabled></td>
-        <td><input type="checkbox" ${data.available ? "checked" : ""} data-field="available"></td>
-        <td><input type="number" class="form-control" value="${data.salesPrice || ""}" data-field="salesPrice"></td>
-        <td><input type="checkbox" ${data.isRestocked ? "checked" : ""} data-field="isRestocked"></td>
-        <td>${generateDropdown("qtyAva", data.qtyAva)}</td>
-      `;
-    }
+    row.innerHTML = `
+      <td><input type="number" class="form-control" value="${data.id}" data-id="${data.docId}" data-field="id" disabled></td>
+      <td><img src="${data.url}" alt="Plant Image" class="img-thumbnail table-image"></td>
+      <td><input type="text" class="form-control" value="${data.commonName || ""}" data-field="commonName" disabled></td>
+      <td><input type="checkbox" ${data.available ? "checked" : ""} data-field="available"></td>
+      <td><input type="number" class="form-control" value="${data.salesPrice || ""}" data-field="salesPrice"></td>
+      <td><input type="checkbox" ${data.isRestocked ? "checked" : ""} data-field="isRestocked"></td>
+      <td>${generateDropdown("qtyAva", data.qtyAva)}</td>
+    `;
     tableBody.appendChild(row);
   });
 }
